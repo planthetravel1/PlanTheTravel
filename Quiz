@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Quiz di Geografia</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 30px; text-align: center; }
+    #container { background: white; padding: 20px; border-radius: 8px; max-width: 700px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .answer-btn { display: block; width: 80%; margin: 10px auto; padding: 10px; border: none; background: #e6e6e6; border-radius: 6px; cursor: pointer; font-size: 16px; }
+    .answer-btn:hover { background: #d4d4d4; }
+    #correctAnswer { margin-top: 20px; font-weight: bold; color: green; display: none; }
+    #nextQuestionBtn { display: none; margin-top: 20px; padding: 10px 20px; background: #0078ff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <h2>Quiz di Geografia – Domande Random</h2>
+
+    <div id="question" style="font-size: 20px; margin-bottom: 20px;"></div>
+
+    <div id="answers"></div>
+
+    <button onclick="mostraSoluzione()" id="soluzioneBtn" style="margin-top: 20px;">Mostra soluzione</button>
+
+    <div id="correctAnswer"></div>
+
+    <button id="nextQuestionBtn" onclick="nuovaDomanda()">Nuova domanda</button>
+</div>
+
+<script>
+const quiz = [
+    { domanda:"Qual è la capitale della Francia?", corretta:"Parigi", sbagliate:["Lione","Marsiglia","Tolosa"] },
+    { domanda:"Qual è la capitale della Germania?", corretta:"Berlino", sbagliate:["Monaco","Amburgo","Francoforte"] },
+    { domanda:"Qual è la capitale dell’Italia?", corretta:"Roma", sbagliate:["Milano","Napoli","Torino"] },
+    { domanda:"Qual è la capitale della Spagna?", corretta:"Madrid", sbagliate:["Barcellona","Valencia","Siviglia"] },
+    { domanda:"Qual è la capitale del Portogallo?", corretta:"Lisbona", sbagliate:["Porto","Coimbra","Funchal"] },
+    { domanda:"Qual è la capitale della Russia?", corretta:"Mosca", sbagliate:["San Pietroburgo","Kazan","Sochi"] },
+    { domanda:"Qual è la capitale del Regno Unito?", corretta:"Londra", sbagliate:["Manchester","Edimburgo","Liverpool"] },
+    { domanda:"Qual è la capitale del Canada?", corretta:"Ottawa", sbagliate:["Toronto","Montreal","Vancouver"] },
+    { domanda:"Qual è la capitale degli USA?", corretta:"Washington D.C.", sbagliate:["New York","Los Angeles","Chicago"] },
+    { domanda:"Qual è la capitale del Giappone?", corretta:"Tokyo", sbagliate:["Kyoto","Osaka","Nagoya"] }
+    // Puoi aggiungere altre domande seguendo lo stesso schema
+];
+
+let rispostaCorrettaTesto = "";
+
+function generaDomanda() {
+    const q = quiz[Math.floor(Math.random() * quiz.length)];
+    document.getElementById("question").textContent = q.domanda;
+
+    let risposte = [q.corretta, ...q.sbagliate].sort(() => Math.random() - 0.5);
+    rispostaCorrettaTesto = q.corretta;
+
+    let html = "";
+    risposte.forEach(r => { html += `<button class="answer-btn">${r}</button>`; });
+    document.getElementById("answers").innerHTML = html;
+
+    document.getElementById("correctAnswer").style.display = "none";
+    document.getElementById("nextQuestionBtn").style.display = "none";
+    document.getElementById("soluzioneBtn").style.display = "inline-block";
+
+    document.querySelectorAll(".answer-btn").forEach(btn => {
+        btn.addEventListener("click", function() { mostraSoluzione(); });
+    });
+}
+
+function mostraSoluzione() {
+    document.getElementById("correctAnswer").style.display = "block";
+    document.getElementById("correctAnswer").textContent = "Risposta corretta: " + rispostaCorrettaTesto;
+    document.getElementById("nextQuestionBtn").style.display = "inline-block";
+    document.getElementById("soluzioneBtn").style.display = "none";
+}
+
+function nuovaDomanda() { generaDomanda(); }
+
+document.addEventListener("DOMContentLoaded", generaDomanda);
+</script>
+
+</body>
+</html>
